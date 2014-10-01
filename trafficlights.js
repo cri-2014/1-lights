@@ -37,6 +37,8 @@ function TrafficLight(redTime, yellowTime, greenTime) {
     this.__redTime = redTime;
     this.__yellowTime = yellowTime;
     this.__greenTime = greenTime;
+	this.__tramWaitTime = 3000;
+	this.__tramGreenTime = 10000;
 
 
     this.__setnewtimer = function (delay, func) {
@@ -82,7 +84,7 @@ function TrafficLight(redTime, yellowTime, greenTime) {
 		this.__tramstate = 'green';
 		setTimeout(function () {
 						this.__exittrammode();
-					}.bind(this), 10000);
+					}.bind(this), this.__tramGreenTime);
 	};
 	
 	TrafficLight.prototype.__tramcallback = function (data) {
@@ -91,7 +93,7 @@ function TrafficLight(redTime, yellowTime, greenTime) {
 			this.__trammode = 'waiting';
 			setTimeout(function () {
 						this.__entertrammode();
-						}.bind(this), 3000);
+						}.bind(this), this.__tramWaitTime);
 		}
 	};
 	
