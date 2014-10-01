@@ -40,7 +40,7 @@ function TrafficLight(redTime, yellowTime, greenTime) {
     this.__greenTime = greenTime;
 	this.__tramWaitTime = 3000;
 	this.__tramGreenTime = 10000;
-	this.__usefulCoefficient = 0.9;
+	this.__usefulCoefficient = 0.7;
 
 
     TrafficLight.prototype.__setnewtimer = function (delay, func) {
@@ -84,7 +84,11 @@ function TrafficLight(redTime, yellowTime, greenTime) {
 		this.__tramstate = null;
 		this.__trammode = null;
 		if (new Date() - this.__stateChangedTime > this.__usefulCoefficient * this.__currentStateTime()) {
-			console.log('Useless change');
+			switch (this.__state) {
+				case 'red': this.toGreen(); break;
+				case 'yellow': this.toRed(); break;
+				case 'green': this.toYellow(); break;
+			}
 		}
 	};
 	
