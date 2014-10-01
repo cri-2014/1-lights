@@ -35,6 +35,7 @@ function TrafficLight(redTime, yellowTime, greenTime) {
     this.__yellowTime = yellowTime;
     this.__greenTime = greenTime;
 
+
     this.__setnewtimer = function (delay, func) {
         if (this.__timer) {
             clearTimeout(this.__timer);
@@ -43,6 +44,7 @@ function TrafficLight(redTime, yellowTime, greenTime) {
     };
 
     TrafficLight.prototype.toRed = function () {
+		console.log('Changed to red');
         this.__state = 'red';
         this.__setnewtimer(this.__redTime, function () {
             this.toGreen();
@@ -50,6 +52,7 @@ function TrafficLight(redTime, yellowTime, greenTime) {
     };
 
     TrafficLight.prototype.toGreen = function () {
+		console.log('Changed to green');
         this.__state = 'green';
         this.__setnewtimer(this.__greenTime, function () {
             this.toYellow();
@@ -57,6 +60,7 @@ function TrafficLight(redTime, yellowTime, greenTime) {
     };
 
     TrafficLight.prototype.toYellow = function () {
+		console.log('Changed to yellow');
         this.__state = 'yellow';
         this.__setnewtimer(this.__yellowTime, function () {
             this.toRed();
