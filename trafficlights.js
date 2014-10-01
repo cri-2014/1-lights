@@ -34,19 +34,26 @@ function TrafficLight(redTime, yellowTime, greenTime) {
     this.__timer = null;
 	this.__tramstate = null;
     this.__state = null;
+	this.__stateChangedTime = null;
     this.__redTime = redTime;
     this.__yellowTime = yellowTime;
     this.__greenTime = greenTime;
 	this.__tramWaitTime = 3000;
 	this.__tramGreenTime = 10000;
+	this.__usefulCoefficient = 0.9;
 
 
-    this.__setnewtimer = function (delay, func) {
+    TrafficLight.prototype.__setnewtimer = function (delay, func) {
         if (this.__timer) {
             clearTimeout(this.__timer);
         }
+		this.__stateChangedTime = new Date();
         this.__timer = setTimeout(func, delay);
     };
+	
+	TrafficLight.prototype.__currentStateTime = function () {
+		return this['__' + this.__state + 'Time'];
+	};
 
     TrafficLight.prototype.toRed = function () {
 		console.log('Changed to red');
@@ -76,13 +83,16 @@ function TrafficLight(redTime, yellowTime, greenTime) {
 		console.log('Exit tram mode');
 		this.__tramstate = null;
 		this.__trammode = null;
+		if (new Date() - this.__stateChangedTime > this.__usefulCoefficient * this.__currentStateTime()) {
+			console.log('Useless change');
+		}
 	};
 	
 	TrafficLight.prototype.__entertrammode = function () {
 		console.log('Entering tram mode');
 		this.__trammode = 'using';
 		this.__tramstate = 'green';
-		setTimeout(function () {
+		this.__tramtimer = setTimeout(function () {
 						this.__exittrammode();
 					}.bind(this), this.__tramGreenTime);
 	};
@@ -91,16 +101,16 @@ function TrafficLight(redTime, yellowTime, greenTime) {
 		if (!this.__trammode) {
 			console.log('Handling tram event');
 			this.__trammode = 'waiting';
-			setTimeout(function () {
+			this.__tramtimer = setTimeout(function () {
 						this.__entertrammode();
-						}.bind(this), this.__tramWaitTime);
+					}.bind(this), this.__tramWaitTime);
 		}
 	};
 	
 	TrafficLight.prototype.tramsubscribe = function (event) {
 		event.addListener('tram', function() {
 							this.__tramcallback();
-							}.bind(this));
+						}.bind(this));
 	};
 
     TrafficLight.prototype.state = function () {
