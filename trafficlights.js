@@ -7,7 +7,7 @@
         }
         this.listeners[event].push(listener);
     };
-	
+
     EventEmitter.prototype.removeListener = function (event, listener) {
         if (this.listeners[event] !== undefined) {
             for (var i = 0; i < this.listeners[event].length; i++) {
@@ -23,7 +23,7 @@
                 this.listeners[event][i](data);
 			}
 		}
-	}
+	};
     
 }
         
