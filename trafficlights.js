@@ -70,8 +70,19 @@ function TrafficLight(redTime, yellowTime, greenTime) {
         }.bind(this));
     };
 	
+	TrafficLight.prototype.__exittrammode = function () {
+		console.log('Exit tram mode');
+		this.__tramstate = null;
+		this.__trammode = false;
+	};
+	
 	TrafficLight.prototype.__entertrammode = function () {
 		console.log('Entering tram mode');
+		this.__trammode = true;
+		this.__tramstate = 'green';
+		setTimeout(function () {
+						this.__exittrammode();
+					}.bind(this), 10000);
 	};
 	
 	TrafficLight.prototype.__tramcallback = function (data) {
