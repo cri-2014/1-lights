@@ -28,8 +28,11 @@
 }
         
 
-function TrafficLight(redTime, yellowTime, greenTime) {    
+function TrafficLight(redTime, yellowTime, greenTime) { 
+	this.__trammode = false;
+	this.__tramtimer = null;
     this.__timer = null;
+	this.__tramstate = null;
     this.__state = null;
     this.__redTime = redTime;
     this.__yellowTime = yellowTime;
@@ -67,15 +70,26 @@ function TrafficLight(redTime, yellowTime, greenTime) {
         }.bind(this));
     };
 	
-	TrafficLight.prototype.tramcallback = function (data) {
-		console.log('TRAM');
+	TrafficLight.prototype.__entertrammode = function () {
+		console.log('Entering tram mode');
+	};
+	
+	TrafficLight.prototype.__tramcallback = function (data) {
+		console.log('Handling tram event');
+		setTimeout(function () {
+					this.__entertrammode();
+					}.bind(this), 3000);
 	};
 	
 	TrafficLight.prototype.tramsubscribe = function (event) {
-		event.addListener('tram', this.tramcallback);
+		event.addListener('tram', function() {
+							this.__tramcallback();
+							}.bind(this));
 	};
 
     TrafficLight.prototype.state = function () {
+		if (this.__trammode)
+			return this.__tramstate;
         return this.__state;
     };
 
@@ -85,6 +99,7 @@ function TrafficLight(redTime, yellowTime, greenTime) {
 changeDOM = function () {
     document.getElementById('colorParagraph').innerHTML = tl.state();
 };
+
 
 var tl = new TrafficLight(5000, 5000, 5000);
 var event = new EventEmitter();
