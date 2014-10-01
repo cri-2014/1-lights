@@ -29,7 +29,7 @@
         
 
 function TrafficLight(redTime, yellowTime, greenTime) { 
-	this.__trammode = false;
+	this.__trammode = null;
 	this.__tramtimer = null;
     this.__timer = null;
 	this.__tramstate = null;
@@ -73,12 +73,12 @@ function TrafficLight(redTime, yellowTime, greenTime) {
 	TrafficLight.prototype.__exittrammode = function () {
 		console.log('Exit tram mode');
 		this.__tramstate = null;
-		this.__trammode = false;
+		this.__trammode = null;
 	};
 	
 	TrafficLight.prototype.__entertrammode = function () {
 		console.log('Entering tram mode');
-		this.__trammode = true;
+		this.__trammode = 'using';
 		this.__tramstate = 'green';
 		setTimeout(function () {
 						this.__exittrammode();
@@ -86,10 +86,13 @@ function TrafficLight(redTime, yellowTime, greenTime) {
 	};
 	
 	TrafficLight.prototype.__tramcallback = function (data) {
-		console.log('Handling tram event');
-		setTimeout(function () {
-					this.__entertrammode();
-					}.bind(this), 3000);
+		if (!this.__trammode) {
+			console.log('Handling tram event');
+			this.__trammode = 'waiting';
+			setTimeout(function () {
+						this.__entertrammode();
+						}.bind(this), 3000);
+		}
 	};
 	
 	TrafficLight.prototype.tramsubscribe = function (event) {
@@ -99,7 +102,7 @@ function TrafficLight(redTime, yellowTime, greenTime) {
 	};
 
     TrafficLight.prototype.state = function () {
-		if (this.__trammode)
+		if (this.__trammode == 'using')
 			return this.__tramstate;
         return this.__state;
     };
