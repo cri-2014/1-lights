@@ -1,0 +1,105 @@
+<script src="node_modules\events\events.js"></script>
+
+<script>
+var config = 
+{
+    red: 10,
+    yellow: 10,
+    green: 10,
+    time: function() 
+	{
+        return this.red + this.yellow + this.green;
+    }
+};
+
+function Traffic(config) 
+{
+	this._config = config;
+	this._timeout = null;
+	this._index = 0;
+	this._state = null;
+	this.tramStatus = false;
+	this.tramTimer = null
+	obj = this
+	
+	this.toYellow = function()
+	{
+		if (this._timeout) 
+		{
+			clearTimeout(this._timeout);
+		}
+		this._state = 'yellow';
+		this._timeout = setTimeout(function () 
+		{
+			this.toGreen();
+		}.bind(this), this._config.yellow * 1000)
+	}
+	
+	this.toGreen = function()
+	{
+		if (this._timeout) 
+		{
+			clearTimeout(this._timeout);
+		}
+		this._state = 'green';
+		this._timeout = setTimeout(function () 
+		{
+			this.toRed();
+		}.bind(this), this._config.green * 1000)
+	}
+	
+	this.toRed = function()
+	{
+		if (this._timeout) 
+		{
+			clearTimeout(this._timeout);
+		}
+		this._state = 'red';
+		this._timeout = setTimeout(function () 
+		{
+			this.toYellow();
+		}.bind(this), this._config.red * 1000)
+	}
+
+	this.state = function()
+	{
+		if(this._tramStatus)
+			return "green";
+		else
+			return this._state
+	}
+	
+	return this
+}
+
+var traffic = new Traffic(config);
+traffic.toRed();
+
+emitter = new EventEmitter();
+emitter.on("tramNear", function()
+{
+	console.log("on");
+	traffic._tramStatus = true;
+	if (traffic.tramTimer) 
+	{
+		clearTimeout(traffic.tramTimer);
+	}
+	traffic.tramTimer = setTimeout(function () 
+	{
+		emitter.emit("tramPassed")
+	}, 5000)
+})
+emitter.on("tramPassed", function()
+{
+	console.log("off");
+	traffic._tramStatus = false;
+})
+
+setInterval(function () 
+{
+    console.log(traffic.state());
+}, 500);
+</script>
+
+<button onclick='emitter.emit("tramNear")'>tram!</button>
+<text id = "text"></text>
