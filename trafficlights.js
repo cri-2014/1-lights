@@ -16,11 +16,17 @@
             }
         }
     };
+	
+	EventEmitter.prototype.__returnFunction = function (event, position, data) {
+		return function () {
+			this.listeners[event][position](data);
+		}.bind(this);
+	};
     
     EventEmitter.prototype.emit = function (event, data) {
         if (this.listeners[event] !== undefined) {
             for (var i = 0; i < this.listeners[event].length; i++) {
-                this.listeners[event][i](data);
+                setTimeout(this.__returnFunction(event, i, data), 0);
             }
         }
     };
