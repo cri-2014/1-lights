@@ -114,3 +114,4 @@ myLight.on("tram", function() {
 myLight.start();
 
 setInterval(function() {console.log(myLight.state)}, 1000);
+//событие tram инициируется с помощью myLight.trigger("tram")
