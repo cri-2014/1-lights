@@ -1,69 +1,98 @@
+var config = 
+{
+    timeout : 
+	{
+        green 	: 6000,
+        yellow 	: 2000,
+        red		: 6000,
+    },
+    order :
+	[
+		'green', 'yellow', 'red'
+	]
+};
+
 function Lights (config) 
 {
-	this._state = null;
-	this._timeout = null;
-	
-	this.greenTime = config.greenTime;
-	this.yellowTime = config.yellowTime;
-	this.redTime = config.redTime;
+	this._state		= null;
+	this._config 	= config;
+	this._timeout 	= null;
+	this._timeoutID = null;
 								
 	Lights.prototype.state = function() 
 	{
 		return this._state;
 	};
-				
-	Lights.prototype.toRed = function() 
+	
+	Lights.prototype.nextColor = function() 
 	{
-		if (this._timeout)
-		{
-			clearTimeout(this._timeout);
-		}
-		this._state = "red";
-		this._timeout = setTimeout(function() 
-		{
-			this.toGreen();
-		}.bind(this), this.redTime);
-	};
+		var index  = this._config.order.indexOf(this._state);
+		var amount = this._config.order.length;
+
+        var nextColor = this._config.order[ (++index % amount) ];
+        var timeout   = this._config.timeout[ nextColor ];
 		
-	Lights.prototype.toYellow = function() 
+        this.switchColor(nextColor, timeout);
+    };
+	
+    Lights.prototype.switchColor = function(color, timeout)
 	{
-		if (this._timeout)
-		{
-			clearTimeout(this._timeout);
-		}
-		this._state = "yellow";
-		this._timeout = setTimeout(function() 
-		{
-			this.toRed();
-		}.bind(this), this.yellowTime);
-	};
+		this._state = color;
+		this._timeout = timeout;
 		
+		if (this._timeoutID) 
+		{
+            clearTimeout(this._timeoutID);
+        }
+        this._timeoutID = setTimeout(function() 
+		{
+            this.nextColor();
+        }.bind(this), this._timeout);
+    };
+	
 	Lights.prototype.toGreen = function() 
 	{
-		if (this._timeout)
-		{
-			clearTimeout(this._timeout);
-		}
-		this._state = "green";
-		this._timeout = setTimeout(function() 
-		{
-			this.toYellow();
-		}.bind(this), this.greenTime);
-	};
-		
-}
-
-var config = 
-{
-	greenTime:	6000,
-	yellowTime:	2000,
-	redTime:	6000
+        this.switchColor("green", 
+						 this._config.timeout.green);
+    };
+	
+	Lights.prototype.toYellow = function() 
+	{
+        this.switchColor("yellow", 
+						 this._config.timeout.yellow);
+    };
+	
+	Lights.prototype.toRed = function() 
+	{
+        this.switchColor("red", 
+						 this._config.timeout.red);
+    };
+	
+	this.toGreen();
 }
 
 var lights = new Lights(config);
-lights.toGreen();
 
-setInterval(function() 
+setInterval(function() {
+	var currentColor = lights.state();
+	
+	switch(currentColor)
 	{
-		alert("now is " + lights.state());
-	}, 2000); 
+		case 'green':
+			document.getElementById('green').src = 'Lights/green.jpg';
+			document.getElementById('yellow').src = 'Lights/none.jpg';
+			document.getElementById('red').src = 'Lights/none.jpg';
+			break;
+		case 'yellow':
+			document.getElementById('green').src = 'Lights/none.jpg';
+			document.getElementById('yellow').src = 'Lights/yellow.jpg';
+			document.getElementById('red').src = 'Lights/none.jpg';
+			break;
+		case 'red':
+			document.getElementById('green').src = 'Lights/none.jpg';
+			document.getElementById('yellow').src = 'Lights/none.jpg';
+			document.getElementById('red').src = 'Lights/red.jpg';
+			break;
+	}
+	
+}, 100); 
