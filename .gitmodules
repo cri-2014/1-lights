@@ -1,0 +1,3 @@
+[submodule "assets/js/EventEmitter"]
+	path = assets/js/EventEmitter
+	url = git://github.com/Wolfy87/EventEmitter.git

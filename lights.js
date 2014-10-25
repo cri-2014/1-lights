@@ -6,6 +6,8 @@ function svetophor(time_r, time_y, time_g){
         this.last_time = 0;
         this.last_state;
         svetophor.prototype.toRed = function(){
+                //alert('svetophor started');
+                //console.log('svetophor started');
                 this.state = 'Red';
                 this.id_r = setTimeout(function() {this.toYellow();}.bind(this), this.red_work);
         }
@@ -18,7 +20,9 @@ function svetophor(time_r, time_y, time_g){
                 this.id_g = setTimeout(function() {this.toRed();}.bind(this), this.green_work);
         }
         svetophor.prototype.getState = function(){
-                console.log(this.state);
+                //console.log(this.state);
+                return this.state;
+                //alert(this.state);
         }
         svetophor.prototype.tram_is_coming = function(){
                 //console.log('Last state -', this.last_state);
@@ -32,7 +36,7 @@ function svetophor(time_r, time_y, time_g){
                 clearTimeout(this.id_y);
                 clearTimeout(this.id_g);
                 this.state = 'Green';
-                id_tram = setTimeout(function() {this.back_to_last_state();}.bind(this), 10000);
+                id_tram = setTimeout(function() {this.back_to_last_state();}.bind(this), 5000);
         }
         svetophor.prototype.back_to_last_state = function() {
                 switch(this.last_state) {
@@ -47,13 +51,22 @@ function svetophor(time_r, time_y, time_g){
                                 break;
                 };
         }
+        svetophor.prototype.stop = function() {
+                clearTimeout(this.id_r);
+                clearTimeout(this.id_y);
+                clearTimeout(this.id_g);
+                clearTimeout(this.id_tram_com);
+                clearTimeout(this.id_tram);
+                this.state = 'default';
+        }
 };
- 
- 
-var light = new svetophor(4000, 2000, 4000);
-light.toRed();
-setInterval(light.getState.bind(light), 1000)
-var EventEmitter = require('events').EventEmitter;
+
+//exports.svetophor = svetophor;
+// var light = new svetophor(2000, 1000, 2000);
+
+// light.toRed();
+//setInterval(light.getState.bind(light), 1000)
+/*var EventEmitter = require('events').EventEmitter;
 var Light_Events = new EventEmitter;
 Light_Events.on('tram', light.tram_is_coming.bind(light))
-setTimeout(function(){Light_Events.emit('tram')}, 2000);
+setTimeout(function(){Light_Events.emit('tram')}, 2000);*/
