@@ -46,12 +46,14 @@
 		                                if (xmlhttp.responseText == 'true'){
 		                                        Light_Events.emit('tram');
 		                                        document.getElementById('info').innerHTML = 'Tram mode on';
-		                                        setTimeout(function(){document.getElementById('info').innerHTML = 'Tram mode on'},8000);
+		                                        setTimeout(function(){document.getElementById('info').innerHTML = 'Tram mode on'}, 8000);
 		                                }
 		                                else{
 		                                	document.getElementById('info').innerHTML = 'Tram mode Off';
 		                                }
 		                        }
+		                        else
+		                        	alert('Server is down, maybe')
 		                }
 	        };
 	        	xmlhttp.send(null);
