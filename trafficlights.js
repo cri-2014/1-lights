@@ -252,3 +252,5 @@ changeDOM = function () {
 var tl = new TrafficLight(5000, 5000, 5000);
 var event = new EventEmitter();
 tl.tramsubscribe(event);
+console.log('Tram event will emit in 3 seconds');
+setTimeout(function(){event.emit('tram')}, 3000);
