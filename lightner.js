@@ -1,85 +1,121 @@
 /**
+*  Отрисовка светофора
+*/
+var canvas  = document.getElementById("test");
+var ctx     = canvas.getContext('2d');
+ctx.strokeStyle = 'red';
+ctx.strokeRect(15, 15, 100, 100);
+ctx.strokeStyle = 'yellow'; 
+ctx.strokeRect(15, 125, 100, 100);
+ctx.strokeStyle = 'green';
+ctx.strokeRect(15, 235, 100, 100);
+
+function colorRed(){
+	ctx.fillStyle = 'red';
+	ctx.fillRect(20, 20, 90, 90);
+	ctx.fillStyle = 'white';
+	ctx.fillRect(20, 130, 90, 90);
+}
+function colorYellow(){
+	ctx.fillStyle = 'yellow';
+	ctx.fillRect(20, 130, 90, 90);
+	ctx.fillStyle = 'white';
+	ctx.fillRect(20, 240, 90, 90);
+}
+function colorGreen(){
+	ctx.fillStyle = 'green';
+	ctx.fillRect(20, 240, 90, 90);
+	ctx.fillStyle = 'white';
+	ctx.fillRect(20, 20, 90, 90);
+}
+
+
+/**
+*	Event Emitter
+*/
+
+
+
+
+
+/**
  * Светофор
  *
  * @param {Object} config
  * @constructor
  */
-
 var config = Object.create(null);
 
 var config = {
-    red: 40,
-    yellow: 5,
-    green: 45,
-    get time() {
-        return this.red + this.yellow + this.green;
-    },
-    set time(time) {
-        if (time < this.red + this.yellow) {
-            throw new Error('Bad value');
-        }
-            
-        this.green = time - this.red - this.yellow;
-    }
+    red: 10,
+    yellow: 3,
+    green: 15,
+    tramGreen: 10,
+    tramWaiting: 3
 };
 
 function Lights(config) {
-    // Публичные поля
+    
     this.state = null;
-            
-    // Приватныt поля
+
     this._timeout = null;
     this._config = config;
+}
 
-    /**
-	 * Переключение в зеленый
-	 */
-	Lights.prototype.toGreen = function () {
-		console.log("Change to green");
-	    if (this._timeout) {
-	        clearTimeout(this._timeout);
-	    }
+/**
+* Переключение в зеленый
+*/
+Lights.prototype.toGreen = function () {
+	console.log("Change to green");
 	            
-	    this.state = 'green';
-	    this._timeout = setTimeout(function () {
-	        this.toYellow();
-	    }.bind(this), this._config.green * 1000)
-	};
-	/**
-	 * Переключение в желтый
-	 */
-	Lights.prototype.toYellow = function () {
-		console.log("Change to yellow");
-	    if (this._timeout) {
-	        clearTimeout(this._timeout);
-	    }
+   	this.state = 'green';
+	colorGreen();
+
+	this._timeout = setTimeout(function () {
+	    this.toYellow();
+	}.bind(this), this._config.green * 1000)
+};
+
+/**
+* Переключение в желтый
+*/
+Lights.prototype.toYellow = function () {
+	console.log("Change to yellow");
 	            
-	    this.state = 'yellow';
-	    this._timeout = setTimeout(function () {
-	        this.toRed();
-	    }.bind(this), this._config.yellow * 1000)
-	};
-	/**
-	 * Переключение в красный
-	 */
-	Lights.prototype.toRed = function () {
-		console.log("Change to red");
-	    if (this._timeout) {
-	        clearTimeout(this._timeout);
-	    }
+    this.state = 'yellow';
+    colorYellow();
+
+    this._timeout = setTimeout(function () {
+        this.toRed();
+    }.bind(this), this._config.yellow * 1000)
+};
+
+/**
+ * Переключение в красный
+ */
+Lights.prototype.toRed = function () {
+	console.log("Change to red");
 	            
-	    this.state = 'red';
-	    this._timeout = setTimeout(function () {
-	        this.toGreen();
-	    }.bind(this), this._config.red * 1000)
-	};
-	
+    this.state = 'red';
+    colorRed(); 
+
+    this._timeout = setTimeout(function () {
+        this.toGreen();
+    }.bind(this), this._config.red * 1000)
+};
+
+/**
+*  Состояние светофора
+*/	
+Lights.prototype.state = function () {
+	console.log(this.state);
 }
 
 var lights = new Lights(config);
-lights.toYellow();
-            
+lights.toRed();
+
+ 
 setInterval(function () {
     console.log(lights.state);
 }, 500);
-
+         
