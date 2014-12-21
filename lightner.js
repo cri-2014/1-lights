@@ -1,5 +1,5 @@
 /**
-*  Отрисовка светофора
+*  Draw traffic light
 */
 var canvas  = document.getElementById("test");
 var ctx     = canvas.getContext('2d');
@@ -42,7 +42,7 @@ function EventEmitter(){
 	this._eventListener = {};
 
 	/**
-	*  Добавляем событие
+	*  Add event
 	*/
 	EventEmitter.prototype.addListener = function(eventName,listener){
 		if(this._eventListener[eventName] === undefined){
@@ -51,7 +51,7 @@ function EventEmitter(){
 		this._eventListener[eventName].push(listener);
 	}
 	/**
-	*  Удаляем событие
+	*  Delete event
 	*/
 	EventEmitter.prototype.deleteListener = function(eventName,listener){
 		if(this._eventListener[eventName] !== undefined){
@@ -61,6 +61,7 @@ function EventEmitter(){
 			}
 		}
 	}
+
 	EventEmitter.prototype.returnListener = function(eventName, position, data){
 		return function() {
 			this._eventListener[eventName][position](data);
@@ -80,10 +81,7 @@ function EventEmitter(){
 
 
 /**
- * Светофор
- *
- * @param {Object} config
- * @constructor
+ * Traffic light
  */
 var config = Object.create(null);
 
@@ -105,7 +103,7 @@ function Lights(config) {
 	this._tramGreen = 10;    
 
 	/**
-	* Переключение в зеленый
+	*  To Green
 	*/
 	Lights.prototype.toGreen = function () {
 		console.log("Change to green");
@@ -119,7 +117,7 @@ function Lights(config) {
 	};
 
 	/**
-	* Переключение в желтый
+	*  To Yellow
 	*/
 	Lights.prototype.toYellow = function () {
 		console.log("Change to yellow");
@@ -133,7 +131,7 @@ function Lights(config) {
 	};
 
 	/**
-	 * Переключение в красный
+	 * To Red
 	 */
 	Lights.prototype.toRed = function () {
 		console.log("Change to red");
@@ -147,7 +145,7 @@ function Lights(config) {
 	};
 
 	/**
-	*  Состояние светофора
+	*  Traffic light state
 	*/	
 	Lights.prototype.state = function () {
 		console.log(this._state);
@@ -155,7 +153,7 @@ function Lights(config) {
 	}
 
 	/**
-	*  Возвращаем состояние светофора
+	*  Return old state traffic light
 	*/
 	Lights.prototype.tramBuyBuy = function(){
 		console.log("Tram Buy Buy!");
@@ -170,7 +168,7 @@ function Lights(config) {
 	}
 
 	/**
-	*  Трамвай подъехал
+	*  Tram is there
 	*/
 	Lights.prototype.tramToGreen = function(){
 		this._tramMode = 'Tram is there';
@@ -186,7 +184,7 @@ function Lights(config) {
 	};
 
 	/**
-	*  Трамвай скоро будет
+	*  Tram wating
 	*/
 	Lights.prototype.drivers = function(){
 		if (!this._tramMode) {
@@ -203,7 +201,7 @@ function Lights(config) {
 	};
 
 	/**
-	*  Прослушка
+	*  Subscribe
 	*/
 	Lights.prototype.tramSubscribe = function(eventName){
 		eventName.addListener('tram', function() {
@@ -213,8 +211,9 @@ function Lights(config) {
 }
 
 
-
-
+/**
+*  Start program 
+*/
 var lights = new Lights(config);
 lights.toGreen();
 ev = new EventEmitter();
