@@ -1,0 +1,80 @@
+#lights {
+	width: 200px;
+	margin: 100px auto;
+	height: 400px;
+	box-sizing: border-box;
+	border: 1px solid #ddd;
+	background: #eeeeee;
+	z-index: 10;
+}
+
+.light {
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	border: 1px solid #aaaaaa;
+	background: #bbbbbb;
+    background: -moz-radial-gradient(50% 25%, circle, #fefefe 0%, #bbbbbb 100%);
+    background: -webkit-radial-gradient(50% 25%, circle, #fefefe 0%, #bbbbbb 100%);
+    background: -o-radial-gradient(50% 25%, circle, #fefefe 0%, #bbbbbb 100%);
+    background: -ms-radial-gradient(50% 25%, circle, #fefefe 0%, #bbbbbb 100%);
+    background: radial-gradient(50% 25%, circle, #fefefe 0%, #bbbbbb 100%);
+	margin: 25px auto;
+	box-sizing: border-box;
+}
+
+.light#ylw {
+	top: 200px;
+}
+
+.light#grn {
+	top: 300px;
+}
+
+#lights.red > .light#red {
+	background: #ff2020;
+    background: -moz-radial-gradient(50% 25%, circle, #fefefe 0%, #ff2020 100%);
+    background: -webkit-radial-gradient(50% 25%, circle, #fefefe 0%, #ff2020 100%);
+    background: -o-radial-gradient(50% 25%, circle, #fefefe 0%, #ff2020 100%);
+    background: -ms-radial-gradient(50% 25%, circle, #fefefe 0%, #ff2020 100%);
+    background: radial-gradient(50% 25%, circle, #fefefe 0%, #ff2020 100%);
+}
+
+#lights.yellow > .light#ylw {
+	background: #f7df10;
+    background: -moz-radial-gradient(50% 25%, circle, #fefefe 0%, #f7df10 100%);
+    background: -webkit-radial-gradient(50% 25%, circle, #fefefe 0%, #f7df10 100%);
+    background: -o-radial-gradient(50% 25%, circle, #fefefe 0%, #f7df10 100%);
+    background: -ms-radial-gradient(50% 25%, circle, #fefefe 0%, #f7df10 100%);
+    background: radial-gradient(50% 25%, circle, #fefefe 0%, #f7df10 100%);
+}
+
+#lights.green > .light#grn {
+	background: #08a008;
+    background: -moz-radial-gradient(50% 25%, circle, #fefefe 0%, #08a008 100%);
+    background: -webkit-radial-gradient(50% 25%, circle, #fefefe 0%, #08a008 100%);
+    background: -o-radial-gradient(50% 25%, circle, #fefefe 0%, #08a008 100%);
+    background: -ms-radial-gradient(50% 25%, circle, #fefefe 0%, #08a008 100%);
+    background: radial-gradient(50% 25%, circle, #fefefe 0%, #08a008 100%);
+}
+
+.tram {
+	width: 200px;
+	height: 135px;
+	/*background: url("tram.png");
+	background-size: cover;*/
+	position: absolute;
+	top: 365px;
+	left: 0px;
+	z-index: 1;
+	cursor: pointer;
+}
+
+.tram.leaves {
+	opacity: 0;
+	transition: opacity 3s ease-in 0.5s;
+	-webkit-transition: opacity 3s ease-in 0.5s;
+	-o-transition: opacity 3s ease-in 0.5s;
+	-moz-transition: opacity 3s ease-in 0.5s;;
+	
+}
