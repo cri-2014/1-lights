@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Светофорчик и Трамвайчик</title>
+	<link rel="stylesheet" type="text/css" href="lights.css">
+	<script type="text/javascript" src="lights.js"></script>
+</head>
+<body>
+	<img class="tram" onclick="lights.trigger('tram')" src="tram.png" />
+	<div id="lights">
+		<div class="light" id="red"></div>
+		<div class="light" id="ylw"></div>
+		<div class="light" id="grn"></div>
+	</div>
+	<script type="text/javascript">
+		var config = {
+			blockId: 'lights',
+			red: 2,
+			yellow: 0.3,	
+			green: 1
+		};
+		
+		var lights = new Lights(config);
+		lights.on("tram", function() {
+			document.getElementsByClassName("tram")[0].onclick = function() {};
+			var duration = 3000;
+			var s = (window.innerWidth - 600) / 2;
+			var delay = 30;
+			var v = (s / (duration / delay)).toFixed();
+			setTimeout(function () {
+				lights.toGreen(10);
+			}, duration);
+			tramAnimation(v, delay, duration, true);
+		});
+		lights.start();
+	</script>
+</body>
+</html>
