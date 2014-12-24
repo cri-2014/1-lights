@@ -16,4 +16,4 @@
 npm install
 node build/server.js
 
-Приложение висит на http://localhost/
+Приложение висит на http://localhost:3000/

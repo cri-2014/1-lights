@@ -46,4 +46,3 @@ module.exports = (grunt) ->
     'coffee:compile'
     'copy:main'
   ])
-
