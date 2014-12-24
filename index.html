@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Lights</title>
+	<style type="text/css">
+	.light {
+		width: 50px;
+		height: 50px;
+		border: 1px solid black;
+		border-radius: 25px;
+		opacity: 0.3;
+		margin: 20px;
+	}
+	#red {
+		background-color: red;
+	}
+	#yellow {
+		background-color: yellow;
+	}
+	#green {
+		background-color: green;
+	}
+	</style>
+</head>
+<body>
+	<div class="light" id="red"></div>
+	<div class="light" id="yellow"></div>
+	<div class="light" id="green"></div>
+	<script type="text/javascript" src="lib/eventEmitter/EventEmitter.js"></script>
+	<script type="text/javascript" src="src/view.js"></script>
+	<script type="text/javascript" src="src/lights.js"></script>
+</body>
+</html>
